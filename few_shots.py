@@ -1,4 +1,4 @@
-few_shots=few_shots = [
+few_shots = [
     {'Question' : "Who reports to William Patterson?",
      'SQLQuery' : "SELECT CONCAT(reports.firstname, ' ', reports.lastname) AS Employee FROM Employees boss JOIN Employees reports ON boss.employeeNumber = reports.reportsTo WHERE boss.firstName = 'William' and boss.lastName = 'Patterson';",
      'SQLResult': "Result of the SQL query",
@@ -15,8 +15,36 @@ few_shots=few_shots = [
       'SQLQuery': "SELECT FORMAT(SUM(quantityOrdered*priceEach),0) as orderValue FROM Orders JOIN OrderDetails ON Orders.orderNumber = OrderDetails. orderNumber AND YEAR(orderDate) = 2004 AND MONTH(orderDate) = 8;",
       'SQLResult': "Result of the SQL query",
       'Answer' : '419,327'},
-    {'Question': "What is the difference in the amount received for each month of 2004 compared to 2003?",
-     'SQLQuery' : "WITH t2003 AS (SELECT YEAR(paymentDate) AS 'year', MONTH(paymentDate) AS 'month', sum(amount) AS amount FROM Payments WHERE YEAR(paymentDate) = 2003 GROUP BY YEAR(paymentDate), MONTH(paymentDate)), t2004 AS (SELECT YEAR(paymentDate) AS 'year', MONTH(paymentDate) AS 'month', sum(amount) AS amount FROM Payments WHERE YEAR(paymentDate) = 2004 GROUP BY YEAR(paymentDate), MONTH(paymentDate)) SELECT t2003.month,format((t2004.amount - t2003.amount),2) AS variance FROM t2003 JOIN t2004 ON t2003.month = t2004.month ORDER BY t2003.month;",
-     'SQLResult': "Result of the SQL query",
-     'Answer' : "'1, 207,884.51', '2, -37,732.35', '3, 204,898.73'"}
+    {'Question' : "What is the average percentage markup of the MSRP on buyPrice rounded to the nearest deicmal?" ,
+      'SQLQuery': "SELECT ROUND(AVG(MSRP/buyPrice)*100 - 100) from Products;",
+      'SQLResult': "Result of the SQL query",
+      'Answer' : '89'},
+    {'Question' : "Who are the employees in Boston?" ,
+      'SQLQuery': "SELECT firstName, lastName FROM Employees JOIN Offices ON Employees.officeCode = Offices.officeCode AND city = 'Boston';",
+      'SQLResult': "Result of the SQL query",
+      'Answer' : '"Julie Firrelli", "Steve Patterson"'},
+    {'Question' : "List the names of the top 3 products (by inventory) sold at less than 80% of the MSRP." ,
+      'SQLQuery': "SELECT DISTINCT(productName), priceEach, MSRP, FORMAT(quantityInStock,0) AS `Quantity in stock` FROM OrderDetails JOIN Products ON OrderDetails.productCode = Products.productCode AND priceEach < .8*MSRP;",
+      'SQLResult': "Result of the SQL query",
+      'Answer' : '1976 Ford Gran Torino	117.59	146.99	9127, 1965 Aston Martin DB5	99.55	124.44	9042 American Airlines: MD-11S	59.22	74.03	8820'},
+    {'Question' : "What are the top 3 most profitable product lines" ,
+      'SQLQuery': "SELECT productLine AS `Product line`, FORMAT(SUM(quantityOrdered*(priceEach -buyPrice)),0) AS Profit FROM Products JOIN OrderDetails ON Products.productCode = OrderDetails.productCode GROUP BY productLine ORDER BY SUM(quantityOrdered*(priceEach -buyPrice)) DESC LIMIT 3;",
+      'SQLResult': "Result of the SQL query",
+      'Answer' : 'Classic Cars, Vintage Cars, and Motorcycles'},
+      {'Question' : "Find the products sold in 2003 but not 2004." ,
+      'SQLQuery': "SELECT DISTINCT productName FROM Products JOIN OrderDetails ON Products.productCode = OrderDetails.productCode JOIN Orders ON OrderDetails.orderNumber = Orders.orderNumber WHERE YEAR(Orders.orderDate) = 2003 AND Products.productCode NOT IN (SELECT productCode FROM OrderDetails JOIN Orders ON OrderDetails.orderNumber = Orders.orderNumber WHERE YEAR(Orders.orderDate) = 2004);",
+      'SQLResult': "Null Table",
+      'Answer' : 'None'},
+      {'Question' : "Display the difference in the amount received for each month of 2004 compared to 2003?" ,
+      'SQLQuery': "WITH t2003 AS (SELECT YEAR(paymentDate) AS 'year', MONTH(paymentDate) AS 'month', sum(amount) AS amount FROM Payments WHERE YEAR(paymentDate) = 2003 GROUP BY YEAR(paymentDate), MONTH(paymentDate)), t2004 AS (SELECT YEAR(paymentDate) AS 'year', MONTH(paymentDate) AS 'month', sum(amount) AS amount FROM Payments WHERE YEAR(paymentDate) = 2004 GROUP BY YEAR(paymentDate), MONTH(paymentDate)) SELECT t2003.month,format((t2004.amount - t2003.amount),2) AS variance FROM t2003 JOIN t2004 ON t2003.month = t2004.month ORDER BY t2003.month;",
+      'SQLResult': "Result of the SQL Query",
+      'Answer' : '(1,	207,884.51), (2,	-37,732.35), (3,	204,898.73), (4,	36,932.04), (5,	48,642.45), (6,	5,623.88), (7,	125,944.48), (8,	131,889.44), (9,	315,239.30), (10,	-131,754.53), (11,	162,894.62), (12,	-7,352.02)'},
+      {'Question' : "What is the percentage value of each product in inventory sorted by the highest percentage. Display only the top 5" ,
+      'SQLQuery': "SELECT productName, format(quantityInStock*buyPrice,0) AS Stock, format(quantityInStock*buyPrice/(totalValue)*100,2) AS Percent FROM Products, (SELECT SUM(quantityInStock*buyPrice) AS totalValue FROM Products) AS T ORDER BY quantityInStock*buyPrice/(totalValue)*100 DESC LIMIT 5;",
+      'SQLResult': "Result of the SQL Query",
+      'Answer' : '(1995 Honda Civic,	3.00, 1952), (Alpine Renault,	2.36), (1962 LanciaA Delta 16V,	2.30), (1968 Dodge Charger,	2.25), (1976 Ford Gran Torino,	2.20'}
+      
+
+
+    
 ]
