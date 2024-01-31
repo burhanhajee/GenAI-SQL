@@ -147,7 +147,11 @@ few_shots = [
                 ORDER BY lastName, firstName ASC;;",
                 'SQLResult': "Result of the SQL query""",
                 'Answer': "'Loui Bondur, 28,474', 'Larry Bott, 36,605', 'Pamela Castillo, 43,411', 'Julie Firrelli, 19,333','Andy Fixter, 28,129', 'Martin Gerard, 19,374'......"},
-] ```
+]
+```
+
+
+
 
 ### Embeddings and Semantic Similarity Example Selection
 
