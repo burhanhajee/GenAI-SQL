@@ -149,7 +149,8 @@ few_shots = [
                 ORDER BY lastName, firstName ASC;;",
                 'SQLResult': "Result of the SQL query""",
                 'Answer': "'Loui Bondur, 28,474', 'Larry Bott, 36,605', 'Pamela Castillo, 43,411', 'Julie Firrelli, 19,333','Andy Fixter, 28,129', 'Martin Gerard, 19,374'......"},
-]
+]'''
+
 ### Embeddings and Semantic Similarity Example Selection
 
 Next, we move to the creation of embeddings for our few-shot examples. Embeddings are vector representations of text that capture the semantic meaning of the words. By converting our examples into embeddings, we enable the system to understand and compare the semantic similarity between different queries. This is beneficial as it helps the model in finding the most contextually relevant example for a given query, which in turn improves the quality of the SQL query generated.
